@@ -11,7 +11,7 @@ from odoo.exceptions import UserError
 
 class VariantAttributeValueWizard(models.TransientModel):
     _name = "variant.attribute.value.wizard"
-    _description = "Wizard to change attriubtes on product variants"
+    _description = "Wizard to change attributes on product variants"
 
     product_ids = fields.Many2many(comodel_name="product.product")
     product_variant_count = fields.Integer(readonly=True)
@@ -186,6 +186,11 @@ class VariantAttributeValueWizard(models.TransientModel):
             tpl_attr_line = template.attribute_line_ids.filtered(
                 lambda l: l.attribute_id == attr
             )
+            # Ensure that product variant combinations are not created
+            # during cleanup.
+            tpl_attr_line = tpl_attr_line.with_context(
+                update_product_template_attribute_values=False
+            )
             error_msg = self._unique_err_msg(product, tpl_attr_line, pavs)
             if not (tpl_attr_line.value_ids - pavs):
                 # no value left
@@ -193,9 +198,7 @@ class VariantAttributeValueWizard(models.TransientModel):
                     tpl_attr_line.active = False
 
                 self._handle_unique_violation(_make_inactive, error_msg)
-            tpl_attr_line.with_context(
-                update_product_template_attribute_values=False
-            ).write({"value_ids": [(3, pav.id) for pav in pavs]})
+            tpl_attr_line.write({"value_ids": [(3, pav.id) for pav in pavs]})
             tpl_attr_values = TplAttrValue.search(
                 [
                     ("attribute_line_id", "=", tpl_attr_line.id),
