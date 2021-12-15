@@ -1,6 +1,6 @@
 # Copyright 2021 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
-from odoo import exceptions
+from odoo.exceptions import UserError
 from odoo.tests.common import Form, SavepointCase
 from odoo.tools import mute_logger
 
@@ -140,14 +140,14 @@ class TestProductVariantChangeAttributeValue(SavepointCase):
         self._change_action(wiz, self.aluminium, "delete")
         # Steel got removed but you cannot drop aluminium too
         # otherwise the variants left won't be unique anymore
-        with self.assertRaises(exceptions.UserError) as err:
+        with self.assertRaises(UserError) as err:
             # assertRaisesRegex drove me insane. Let's check the string in the easy way
             wiz.action_apply()
-            self.assertTrue(
-                err.exception.name.endswith(
-                    "uniqueness compromised.\n Impossible to remove value(s): Aluminium"
-                )
+        self.assertTrue(
+            err.exception.args[0].endswith(
+                "uniqueness compromised.\n Impossible to remove value(s): Aluminium"
             )
+        )
 
     @mute_logger("odoo.models.unlink")
     def test_change_attribute_value(self):
