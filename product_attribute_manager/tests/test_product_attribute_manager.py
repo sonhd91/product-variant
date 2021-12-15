@@ -5,7 +5,7 @@ from odoo.tests.common import Form, SavepointCase
 from odoo.tools import mute_logger
 
 
-class TestProductVariantChangeAttributeValue(SavepointCase):
+class TestProductAttributeManager(SavepointCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -25,7 +25,7 @@ class TestProductVariantChangeAttributeValue(SavepointCase):
             {"name": "Blue", "attribute_id": cls.color.id}
         )
         cls.template = cls.env.ref(
-            "product_variant_change_attribute_value.product_product_1_product_template"
+            "product_attribute_manager.product_product_1_product_template"
         )
         cls.variants = cls.template.product_variant_ids
         cls.variant_1 = cls.variants[0]
@@ -131,7 +131,7 @@ class TestProductVariantChangeAttributeValue(SavepointCase):
     #     self.assertFalse(self._is_value_on_variant(self.variant_1, self.steel))
     #     self.assertFalse(
     #         self._is_attribute_value_on_template(self.variant_1, self.steel)
-    #     )
+    # )
 
     @mute_logger("odoo.models.unlink", "odoo.sql_db")
     def test_active_deactivate_attributes_uniqueness_error(self):
