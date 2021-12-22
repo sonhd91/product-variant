@@ -25,7 +25,7 @@ class TestProductVariantChangeAttributeValue(SavepointCase):
             {"name": "Blue", "attribute_id": cls.color.id}
         )
         cls.template = cls.env.ref(
-            "product_variant_change_attribute_value.product_product_1_product_template"
+            "product_attribute_manager.product_product_1_product_template"
         )
         cls.variants = cls.template.product_variant_ids
         cls.variant_1 = cls.variants[0]
