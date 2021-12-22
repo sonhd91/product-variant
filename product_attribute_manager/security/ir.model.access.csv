@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_variant_attribute_value_wizard,access_variant_attribute_value_wizard,model_variant_attribute_value_wizard,product.group_product_variant,1,1,1,1
+access_variant_attribute_value_action,access_variant_attribute_value_action,model_variant_attribute_value_action,product.group_product_variant,1,1,1,1
